@@ -13,6 +13,10 @@
 		641E4B1F20A9ABCB0007EA96 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 641E4B1E20A9ABCB0007EA96 /* Assets.xcassets */; };
 		641E4B2220A9ABCB0007EA96 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 641E4B2020A9ABCB0007EA96 /* LaunchScreen.storyboard */; };
 		641E4B2520A9ABCC0007EA96 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 641E4B2420A9ABCC0007EA96 /* main.m */; };
+		641E4B2E20A9AC700007EA96 /* MTIconFontManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 641E4B2D20A9AC700007EA96 /* MTIconFontManager.m */; };
+		641E4B3020A9B6FF0007EA96 /* iconfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 641E4B2F20A9B6700007EA96 /* iconfont.ttf */; };
+		641E4B3320AA6D690007EA96 /* UIImage+MTIconFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 641E4B3220AA6D690007EA96 /* UIImage+MTIconFont.m */; };
+		641E4B3620AAB1FB0007EA96 /* iconfont.plist in Resources */ = {isa = PBXBuildFile; fileRef = 641E4B3520AAB1FB0007EA96 /* iconfont.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +30,13 @@
 		641E4B2120A9ABCB0007EA96 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		641E4B2320A9ABCB0007EA96 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		641E4B2420A9ABCC0007EA96 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		641E4B2C20A9AC700007EA96 /* MTIconFontManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MTIconFontManager.h; sourceTree = "<group>"; };
+		641E4B2D20A9AC700007EA96 /* MTIconFontManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MTIconFontManager.m; sourceTree = "<group>"; };
+		641E4B2F20A9B6700007EA96 /* iconfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = iconfont.ttf; sourceTree = "<group>"; };
+		641E4B3120AA6D690007EA96 /* UIImage+MTIconFont.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+MTIconFont.h"; sourceTree = "<group>"; };
+		641E4B3220AA6D690007EA96 /* UIImage+MTIconFont.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+MTIconFont.m"; sourceTree = "<group>"; };
+		641E4B3420AAB17D0007EA96 /* MTIconFont.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MTIconFont.h; sourceTree = "<group>"; };
+		641E4B3520AAB1FB0007EA96 /* iconfont.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = iconfont.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +69,9 @@
 		641E4B1420A9ABCB0007EA96 /* MTIconFont */ = {
 			isa = PBXGroup;
 			children = (
+				641E4B2F20A9B6700007EA96 /* iconfont.ttf */,
+				641E4B3520AAB1FB0007EA96 /* iconfont.plist */,
+				641E4B2B20A9AC4E0007EA96 /* MTIconFont */,
 				641E4B1520A9ABCB0007EA96 /* AppDelegate.h */,
 				641E4B1620A9ABCB0007EA96 /* AppDelegate.m */,
 				641E4B1820A9ABCB0007EA96 /* ViewController.h */,
@@ -67,6 +81,18 @@
 				641E4B2020A9ABCB0007EA96 /* LaunchScreen.storyboard */,
 				641E4B2320A9ABCB0007EA96 /* Info.plist */,
 				641E4B2420A9ABCC0007EA96 /* main.m */,
+			);
+			path = MTIconFont;
+			sourceTree = "<group>";
+		};
+		641E4B2B20A9AC4E0007EA96 /* MTIconFont */ = {
+			isa = PBXGroup;
+			children = (
+				641E4B3420AAB17D0007EA96 /* MTIconFont.h */,
+				641E4B2C20A9AC700007EA96 /* MTIconFontManager.h */,
+				641E4B2D20A9AC700007EA96 /* MTIconFontManager.m */,
+				641E4B3120AA6D690007EA96 /* UIImage+MTIconFont.h */,
+				641E4B3220AA6D690007EA96 /* UIImage+MTIconFont.m */,
 			);
 			path = MTIconFont;
 			sourceTree = "<group>";
@@ -128,8 +154,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				641E4B3020A9B6FF0007EA96 /* iconfont.ttf in Resources */,
 				641E4B2220A9ABCB0007EA96 /* LaunchScreen.storyboard in Resources */,
 				641E4B1F20A9ABCB0007EA96 /* Assets.xcassets in Resources */,
+				641E4B3620AAB1FB0007EA96 /* iconfont.plist in Resources */,
 				641E4B1D20A9ABCB0007EA96 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -142,7 +170,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				641E4B1A20A9ABCB0007EA96 /* ViewController.m in Sources */,
+				641E4B3320AA6D690007EA96 /* UIImage+MTIconFont.m in Sources */,
 				641E4B2520A9ABCC0007EA96 /* main.m in Sources */,
+				641E4B2E20A9AC700007EA96 /* MTIconFontManager.m in Sources */,
 				641E4B1720A9ABCB0007EA96 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -284,7 +314,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = RM28RBP83N;
+				DEVELOPMENT_TEAM = 53HAR28V3A;
 				INFOPLIST_FILE = MTIconFont/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -301,7 +331,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = RM28RBP83N;
+				DEVELOPMENT_TEAM = 53HAR28V3A;
 				INFOPLIST_FILE = MTIconFont/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
