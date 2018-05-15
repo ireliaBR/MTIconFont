@@ -55,9 +55,11 @@ IconFont是一种通过字体文件来构建纯色图的方案。更详细的介
 ```
 
 2. 将生成的 `iconfont.html` 放入设计给的iconfont文件夹内，打开网页
+
 ![preview](./Docs/preview.png)
 
 3. 页面展示
+
 ![preview](./Docs/preview2.png)
  
 ## 结语
