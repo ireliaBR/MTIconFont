@@ -6,10 +6,28 @@
 	<string>\ue601</string>
 	<key>icon_two</key>
 	<string>\ue602</string>
-	<key>icon_three</key>
-	<string>\ue603</string>
+	<key>homepage</key>
+	<dict>
+		<key>icon_aaa</key>
+		<string>\ue604</string>
+		<key>icon_bbb</key>
+		<string>\ue604</string>
+		<key>aaa</key>
+		<dict>
+			<key>icon_aaa_bbb</key>
+			<string>\ue604</string>
+			<key>icon_aaa_ccc</key>
+			<string>\ue604</string>
+			<key>icon_aaa_ddd</key>
+			<string>\ue604</string>
+		</dict>
+		<key>icon_ccc</key>
+		<string>\ue604</string>
+	</dict>
 	<key>icon_four</key>
 	<string>\ue604</string>
+	<key>icon_three</key>
+	<string>\ue603</string>
 	<key>icon_five</key>
 	<string>\ue605</string>
 	<key>icon_six</key>

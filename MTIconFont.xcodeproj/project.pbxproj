@@ -17,6 +17,7 @@
 		641E4B3020A9B6FF0007EA96 /* iconfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 641E4B2F20A9B6700007EA96 /* iconfont.ttf */; };
 		641E4B3320AA6D690007EA96 /* UIImage+MTIconFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 641E4B3220AA6D690007EA96 /* UIImage+MTIconFont.m */; };
 		641E4B3620AAB1FB0007EA96 /* iconfont.plist in Resources */ = {isa = PBXBuildFile; fileRef = 641E4B3520AAB1FB0007EA96 /* iconfont.plist */; };
+		64968A7720AD16B100C406F4 /* MTIconFont.h in Sources */ = {isa = PBXBuildFile; fileRef = 641E4B3420AAB17D0007EA96 /* MTIconFont.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -169,6 +170,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				64968A7720AD16B100C406F4 /* MTIconFont.h in Sources */,
 				641E4B1A20A9ABCB0007EA96 /* ViewController.m in Sources */,
 				641E4B3320AA6D690007EA96 /* UIImage+MTIconFont.m in Sources */,
 				641E4B2520A9ABCC0007EA96 /* main.m in Sources */,

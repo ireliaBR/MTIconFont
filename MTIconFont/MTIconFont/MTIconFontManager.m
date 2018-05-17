@@ -22,6 +22,11 @@ colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 \
 blue:((float)(rgbValue & 0xFF))/255.0 alpha:alpha]
 
+#define UIColorFromRGB(rgbValue) [UIColor \
+colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
+green:((float)((rgbValue & 0xFF00) >> 8))/255.0 \
+blue:((float)(rgbValue & 0xFF))/255.0 alpha:1]
+
 static MTIconFontManager *ME;
 
 @interface MTIconFontManager()
@@ -45,7 +50,21 @@ static MTIconFontManager *ME;
 
 #pragma mark - 📕Public
 + (MTIconFontManager *)manager {
-    NSAssert(ME, @"MTIconFontManager not initialize");
+    if (ME == nil) {
+        @synchronized (self) {
+            if (ME == nil) {
+                ME = [MTIconFontManager new];
+                ME.fontName = @"iconfont";
+                
+                NSString *iconFontUrlStr = [[NSBundle mainBundle] URLForResource:ME.fontName withExtension:@"ttf"].path;
+                NSString *iconFontMapFileUrlStr = [[NSBundle mainBundle] URLForResource:ME.fontName withExtension:@"plist"].path;
+                
+                ME.iconFontUrlStr = iconFontUrlStr;
+                ME.iconFontMapFileUrlStr = iconFontMapFileUrlStr;
+                [ME parsePlistWithPath:iconFontMapFileUrlStr];
+            }
+        }
+    }
     return ME;
 }
 
@@ -58,7 +77,7 @@ static MTIconFontManager *ME;
         ME.iconFontUrlStr = iconFontUrlStr;
         ME.iconFontMapFileUrlStr = iconFontMapFileUrlStr;
         ME.fontName = [iconFontUrlStr.lastPathComponent componentsSeparatedByString:@"."].firstObject;
-        ME.mapDict = [[NSDictionary alloc] initWithContentsOfFile:iconFontMapFileUrlStr];
+        [ME parsePlistWithPath:iconFontMapFileUrlStr];
     });
 }
 
@@ -78,18 +97,18 @@ static MTIconFontManager *ME;
     NSString *code = [self codeWithIconName:iconName];
     
     CGContextRef context = UIGraphicsGetCurrentContext();
-    
+    CGContextSetAlpha(context, alpha);
     if ([code respondsToSelector:@selector(drawAtPoint:withAttributes:)]) {
         /**
          * 如果这里抛出异常，请打开断点列表，右击All Exceptions -> Edit Breakpoint -> All修改为Objective-C
          * See: http://stackoverflow.com/questions/1163981/how-to-add-a-breakpoint-to-objc-exception-throw/14767076#14767076
          */
-        [code drawAtPoint:CGPointZero withAttributes:@{NSFontAttributeName:font, NSForegroundColorAttributeName:UIColorFromRGBA(colorRGB, alpha)}];
+        [code drawAtPoint:CGPointZero withAttributes:@{NSFontAttributeName:font, NSForegroundColorAttributeName:UIColorFromRGB(colorRGB)}];
     } else {
         
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        CGContextSetFillColorWithColor(context, UIColorFromRGBA(colorRGB, alpha).CGColor);
+        CGContextSetFillColorWithColor(context, UIColorFromRGB(colorRGB).CGColor);
         [code drawAtPoint:CGPointMake(0, 0) withFont:font];
 #pragma clang pop
     }
@@ -187,6 +206,33 @@ static MTIconFontManager *ME;
     return [self.iconCache objectForKey:key];
 }
 
+
+/**
+ 解析映射文件
+
+ @param path 映射文件路径
+ */
+- (void)parsePlistWithPath:(NSString *)path {
+    NSMutableDictionary<NSString *, NSString *> *mapDict = [NSMutableDictionary new];
+    NSDictionary<NSString *, id> *dict = [[NSDictionary alloc] initWithContentsOfFile:path];
+    [self parseDictWithDict:dict mapDict:mapDict];
+    self.mapDict = [mapDict copy];
+}
+
+- (void)parseDictWithDict:(NSDictionary<NSString *, id> *)dict mapDict:(NSMutableDictionary<NSString *, NSString *> *)mapDict {
+    for (NSString *key in dict.allKeys) {
+        id value = dict[key];
+        if ([value isKindOfClass:NSString.class]) {
+            mapDict[key] = value;
+            continue;
+        }
+        
+        if ([value isKindOfClass:NSDictionary.class]) {
+            [self parseDictWithDict:value mapDict:mapDict];
+            continue;
+        }
+    }
+}
 #pragma mark - 📘Protocol conformance
 
 
