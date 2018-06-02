@@ -26,11 +26,26 @@
 
 
 #pragma mark - 📕Public
-+ (UIImage *)imageIconName:(NSString *)iconName
++ (UIImage *)imageWithFontName:(NSString *)fontName
+                      iconName:(NSString *)iconName
+                          size:(CGFloat)size
+                      colorRGB:(NSInteger)colorRGB
+                         alpha:(CGFloat)alpha {
+    return [MTIconFontManager.manager iconWithFontName:fontName
+                                              iconName:iconName
+                                                  size:size
+                                              colorRGB:colorRGB
+                                                 alpha:alpha];
+}
+
++ (UIImage *)imageWithIconName:(NSString *)iconName
                       size:(CGFloat)size
                   colorRGB:(NSInteger)colorRGB
                      alpha:(CGFloat)alpha {
-    return [MTIconFontManager.manager iconWithIconName:iconName size:size colorRGB:colorRGB alpha:alpha];
+    return [MTIconFontManager.manager iconWithIconName:iconName
+                                                  size:size
+                                              colorRGB:colorRGB
+                                                 alpha:alpha];
 }
 
 + (UIImage *)imageNormalIconName:(NSString *)iconName {

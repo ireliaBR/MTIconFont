@@ -14,10 +14,11 @@
 		641E4B2220A9ABCB0007EA96 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 641E4B2020A9ABCB0007EA96 /* LaunchScreen.storyboard */; };
 		641E4B2520A9ABCC0007EA96 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 641E4B2420A9ABCC0007EA96 /* main.m */; };
 		641E4B2E20A9AC700007EA96 /* MTIconFontManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 641E4B2D20A9AC700007EA96 /* MTIconFontManager.m */; };
-		641E4B3020A9B6FF0007EA96 /* iconfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 641E4B2F20A9B6700007EA96 /* iconfont.ttf */; };
 		641E4B3320AA6D690007EA96 /* UIImage+MTIconFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 641E4B3220AA6D690007EA96 /* UIImage+MTIconFont.m */; };
 		641E4B3620AAB1FB0007EA96 /* iconfont.plist in Resources */ = {isa = PBXBuildFile; fileRef = 641E4B3520AAB1FB0007EA96 /* iconfont.plist */; };
-		64968A7720AD16B100C406F4 /* MTIconFont.h in Sources */ = {isa = PBXBuildFile; fileRef = 641E4B3420AAB17D0007EA96 /* MTIconFont.h */; };
+		64E7F3F320C1129D008D9EB9 /* MTFontModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 64E7F3F220C1129D008D9EB9 /* MTFontModel.m */; };
+		64E7F3F420C1269E008D9EB9 /* iconfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 641E4B2F20A9B6700007EA96 /* iconfont.ttf */; };
+		64E7F3F820C1286B008D9EB9 /* waterMark.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 64E7F3F720C1286B008D9EB9 /* waterMark.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,9 @@
 		641E4B3220AA6D690007EA96 /* UIImage+MTIconFont.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+MTIconFont.m"; sourceTree = "<group>"; };
 		641E4B3420AAB17D0007EA96 /* MTIconFont.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MTIconFont.h; sourceTree = "<group>"; };
 		641E4B3520AAB1FB0007EA96 /* iconfont.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = iconfont.plist; sourceTree = "<group>"; };
+		64E7F3F120C1129D008D9EB9 /* MTFontModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MTFontModel.h; sourceTree = "<group>"; };
+		64E7F3F220C1129D008D9EB9 /* MTFontModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MTFontModel.m; sourceTree = "<group>"; };
+		64E7F3F720C1286B008D9EB9 /* waterMark.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = waterMark.ttf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,8 +74,8 @@
 		641E4B1420A9ABCB0007EA96 /* MTIconFont */ = {
 			isa = PBXGroup;
 			children = (
-				641E4B2F20A9B6700007EA96 /* iconfont.ttf */,
-				641E4B3520AAB1FB0007EA96 /* iconfont.plist */,
+				64E7F3F620C12850008D9EB9 /* waterMark */,
+				64E7F3F520C1283F008D9EB9 /* iconfont */,
 				641E4B2B20A9AC4E0007EA96 /* MTIconFont */,
 				641E4B1520A9ABCB0007EA96 /* AppDelegate.h */,
 				641E4B1620A9ABCB0007EA96 /* AppDelegate.m */,
@@ -94,8 +98,27 @@
 				641E4B2D20A9AC700007EA96 /* MTIconFontManager.m */,
 				641E4B3120AA6D690007EA96 /* UIImage+MTIconFont.h */,
 				641E4B3220AA6D690007EA96 /* UIImage+MTIconFont.m */,
+				64E7F3F120C1129D008D9EB9 /* MTFontModel.h */,
+				64E7F3F220C1129D008D9EB9 /* MTFontModel.m */,
 			);
 			path = MTIconFont;
+			sourceTree = "<group>";
+		};
+		64E7F3F520C1283F008D9EB9 /* iconfont */ = {
+			isa = PBXGroup;
+			children = (
+				641E4B2F20A9B6700007EA96 /* iconfont.ttf */,
+				641E4B3520AAB1FB0007EA96 /* iconfont.plist */,
+			);
+			path = iconfont;
+			sourceTree = "<group>";
+		};
+		64E7F3F620C12850008D9EB9 /* waterMark */ = {
+			isa = PBXGroup;
+			children = (
+				64E7F3F720C1286B008D9EB9 /* waterMark.ttf */,
+			);
+			path = waterMark;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -155,10 +178,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				641E4B3020A9B6FF0007EA96 /* iconfont.ttf in Resources */,
 				641E4B2220A9ABCB0007EA96 /* LaunchScreen.storyboard in Resources */,
 				641E4B1F20A9ABCB0007EA96 /* Assets.xcassets in Resources */,
 				641E4B3620AAB1FB0007EA96 /* iconfont.plist in Resources */,
+				64E7F3F820C1286B008D9EB9 /* waterMark.ttf in Resources */,
+				64E7F3F420C1269E008D9EB9 /* iconfont.ttf in Resources */,
 				641E4B1D20A9ABCB0007EA96 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -170,10 +194,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				64968A7720AD16B100C406F4 /* MTIconFont.h in Sources */,
 				641E4B1A20A9ABCB0007EA96 /* ViewController.m in Sources */,
 				641E4B3320AA6D690007EA96 /* UIImage+MTIconFont.m in Sources */,
 				641E4B2520A9ABCC0007EA96 /* main.m in Sources */,
+				64E7F3F320C1129D008D9EB9 /* MTFontModel.m in Sources */,
 				641E4B2E20A9AC700007EA96 /* MTIconFontManager.m in Sources */,
 				641E4B1720A9ABCB0007EA96 /* AppDelegate.m in Sources */,
 			);

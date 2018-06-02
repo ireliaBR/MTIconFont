@@ -13,13 +13,29 @@
 /**
  获取iconfont中的icon
 
+ @param fontName 字体名字
  @param iconName 图标名字，可以是名字或unicode
  @param size 图标大小
  @param colorRGB 图标颜色 0xffffff
  @param alpha 透明度 0~1
  @return 图片
  */
-+ (UIImage *)imageIconName:(nonnull NSString *)iconName
++ (UIImage *)imageWithFontName:(nonnull NSString *)fontName
+                      iconName:(nonnull NSString *)iconName
+                          size:(CGFloat)size
+                      colorRGB:(NSInteger)colorRGB
+                         alpha:(CGFloat)alpha;
+
+/**
+ 获取iconfont中的icon
+ 
+ @param iconName 图标名字，可以是名字或unicode
+ @param size 图标大小
+ @param colorRGB 图标颜色 0xffffff
+ @param alpha 透明度 0~1
+ @return 图片
+ */
++ (UIImage *)imageWithIconName:(nonnull NSString *)iconName
                       size:(CGFloat)size
                   colorRGB:(NSInteger)colorRGB
                      alpha:(CGFloat)alpha;

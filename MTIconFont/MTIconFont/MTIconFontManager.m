@@ -15,6 +15,7 @@
 
 
 // 自定义模块的头文件
+#import "MTFontModel.h"
 
 /**定义颜色的宏*/
 #define UIColorFromRGBA(rgbValue, alpha) [UIColor \
@@ -27,16 +28,18 @@ colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 \
 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1]
 
+#ifdef DEBUG
+#define MTLog(fmt, ...)  NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#else
+#define MTLog(fmt, ...)
+#endif
+
 static MTIconFontManager *ME;
 
 @interface MTIconFontManager()
 
-@property (nonatomic, copy) NSString *iconFontUrlStr;
-@property (nonatomic, copy) NSString *iconFontMapFileUrlStr;
-
-@property (nonatomic, strong) NSString *fontName;
-@property (nonatomic, strong) NSDictionary *mapDict;
-
+@property (nonatomic, copy) NSString *defaultFontName;
+@property (nonatomic, strong) NSMutableArray<MTFontModel*> *fonts;
 @property (nonatomic, strong) NSCache *iconCache;
 
 @end
@@ -54,14 +57,12 @@ static MTIconFontManager *ME;
         @synchronized (self) {
             if (ME == nil) {
                 ME = [MTIconFontManager new];
-                ME.fontName = @"iconfont";
+                ME.defaultFontName = @"iconfont";
                 
-                NSString *iconFontUrlStr = [[NSBundle mainBundle] URLForResource:ME.fontName withExtension:@"ttf"].path;
-                NSString *iconFontMapFileUrlStr = [[NSBundle mainBundle] URLForResource:ME.fontName withExtension:@"plist"].path;
+                NSString *iconFontUrlStr = [[NSBundle mainBundle] URLForResource:ME.defaultFontName withExtension:@"ttf"].path;
+                NSString *iconFontMapFileUrlStr = [[NSBundle mainBundle] URLForResource:ME.defaultFontName withExtension:@"plist"].path;
                 
-                ME.iconFontUrlStr = iconFontUrlStr;
-                ME.iconFontMapFileUrlStr = iconFontMapFileUrlStr;
-                [ME parsePlistWithPath:iconFontMapFileUrlStr];
+                [ME registerWithFontPath:iconFontUrlStr plistPath:iconFontMapFileUrlStr];
             }
         }
     }
@@ -74,27 +75,74 @@ static MTIconFontManager *ME;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         ME = [MTIconFontManager new];
-        ME.iconFontUrlStr = iconFontUrlStr;
-        ME.iconFontMapFileUrlStr = iconFontMapFileUrlStr;
-        ME.fontName = [iconFontUrlStr.lastPathComponent componentsSeparatedByString:@"."].firstObject;
-        [ME parsePlistWithPath:iconFontMapFileUrlStr];
+        NSString *fontName = [iconFontUrlStr.lastPathComponent componentsSeparatedByString:@"."].firstObject;
+        ME.defaultFontName = fontName;
+        [ME registerWithFontPath:iconFontUrlStr plistPath:iconFontMapFileUrlStr];
     });
+}
+
+/**
+ 注册字体文件
+ 
+ @param fontPath 字体文件位置
+ @param plistPath 映射文件位置
+ */
+- (void)registerWithFontPath:(NSString *)fontPath plistPath:(NSString *)plistPath {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSAssert([fileManager fileExistsAtPath:fontPath], @"字体文件位置%@, 不存在", fontPath);
+    
+    NSString *fontName = [fontPath.lastPathComponent componentsSeparatedByString:@"."].firstObject;
+    for (MTFontModel *fontModel in self.fonts) {
+        NSCAssert(![fontModel.fontName isEqualToString:fontName], @"fontName: %@, 已经注册", fontName);
+    }
+    BOOL isSuccess = [self registerFontWithURL:[NSURL fileURLWithPath:fontPath]];
+    NSCAssert(isSuccess, @"fontName: %@, 注册失败", fontName);
+    
+    MTFontModel *fontModel = [MTFontModel new];
+    fontModel.fontName = fontName;
+    
+    if ([fileManager fileExistsAtPath:plistPath] && isSuccess) {
+        fontModel.mapDict = [self registerPlistWithPath:plistPath];
+    }
+    
+    [self.fonts addObject:fontModel];
 }
 
 - (UIImage *)iconWithIconName:(NSString *)iconName
                          size:(CGFloat)size
                      colorRGB:(NSInteger)colorRGB
                         alpha:(CGFloat)alpha {
-    UIImage *image = [self valueForIconName:iconName size:size colorRGB:colorRGB alpha:alpha];
+    return [self iconWithFontName:self.defaultFontName
+                  iconName:iconName
+                      size:size
+                  colorRGB:colorRGB
+                     alpha:alpha];
+}
+
+- (UIImage *)iconWithFontName:(NSString *)fontName
+                     iconName:(NSString *)iconName
+                         size:(CGFloat)size
+                     colorRGB:(NSInteger)colorRGB
+                        alpha:(CGFloat)alpha {
+    UIImage *image = [self valueForFontName:fontName iconName:iconName size:size colorRGB:colorRGB alpha:alpha];
     if (image != nil) {
         return image;
     }
     
+    MTFontModel *fontModel = nil;
+    for (MTFontModel *model in self.fonts) {
+        if ([model.fontName isEqualToString:fontName]) {
+            fontModel = model;
+            break;
+        }
+    }
+    NSAssert(fontModel != nil, @"fontName: %@, 未注册", fontName);
+    
     CGFloat scale = [UIScreen mainScreen].scale;
     CGFloat realSize = size * scale;
-    UIFont *font = [self fontWithSize:realSize];
+    UIFont *font = [self fontWithName:fontModel.fontName size:realSize];
     UIGraphicsBeginImageContext(CGSizeMake(realSize, realSize));
-    NSString *code = [self codeWithIconName:iconName];
+    NSString *code = [self codeWithMapDict:fontModel.mapDict IconName:iconName];
     
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetAlpha(context, alpha);
@@ -121,46 +169,33 @@ static MTIconFontManager *ME;
 }
 
 #pragma mark - 📗Private
-/**
- 注册URL对应的字体文件
 
- @param url 字体文件URL
- */
-- (void)registerFontWithURL:(NSURL *)url {
-    NSAssert([[NSFileManager defaultManager] fileExistsAtPath:[url path]], @"Font file doesn't exist， path %@", url.path);
-    CGDataProviderRef fontDataProvider = CGDataProviderCreateWithURL((__bridge CFURLRef)url);
-    CGFontRef newFont = CGFontCreateWithDataProvider(fontDataProvider);
-    CGDataProviderRelease(fontDataProvider);
-    CTFontManagerRegisterGraphicsFont(newFont, nil);
-    CGFontRelease(newFont);
-}
 
 
 /**
  获取对应尺寸的font
 
+ @param fontName 字体名字
  @param size 尺寸
  @return 字体
  */
-- (UIFont *)fontWithSize:(CGFloat)size {
-    UIFont *font = [UIFont fontWithName:self.fontName size:size];
-    if (font == nil) {
-        [self registerFontWithURL:[NSURL fileURLWithPath:self.iconFontUrlStr]];
-        font = [UIFont fontWithName:[self fontName] size:size];
-        NSAssert(font, @"UIFont object should not be nil, check if the font file is added to the application bundle and you're using the correct font name.");
-    }
+- (UIFont *)fontWithName:(NSString *)fontName
+                    size:(CGFloat)size {
+    UIFont *font = [UIFont fontWithName:fontName size:size];
     return font;
 }
 
 /**
  通过iconName获取映射文件中code的值
 
+ @param mapDict mapDict
  @param iconName iconName
  @return code
  */
-- (NSString *)codeWithIconName:(NSString *)iconName {
-    NSString *code = self.mapDict[iconName];
-    NSAssert([code isKindOfClass:NSString.class], @"code: %@ 不是字符串", code);
+- (NSString *)codeWithMapDict:(NSDictionary *)mapDict
+                     IconName:(NSString *)iconName {
+    NSString *code = mapDict[iconName];
+//    NSAssert([code isKindOfClass:NSString.class], @"code: %@ 不是字符串", code);
     code = [self replaceUnicode:code];
     if (code == nil) {
         code = iconName;
@@ -198,25 +233,41 @@ static MTIconFontManager *ME;
     [self.iconCache setObject:image forKey:key];
 }
 
-- (id)valueForIconName:(NSString *)iconName
+- (id)valueForFontName:(NSString *)fontName
+              iconName:(NSString *)iconName
                   size:(CGFloat)size
               colorRGB:(NSInteger)colorRGB
                  alpha:(CGFloat)alpha {
-    NSString *key = [NSString stringWithFormat:@"%@_%f_%ld_%f", iconName, size, (long)colorRGB, alpha];
+    NSString *key = [NSString stringWithFormat:@"%@_%@_%f_%ld_%f", fontName, iconName, size, (long)colorRGB, alpha];
     return [self.iconCache objectForKey:key];
 }
 
+/**
+ 注册URL对应的字体文件
+ 
+ @param url 字体文件URL
+ */
+- (BOOL)registerFontWithURL:(NSURL *)url {
+    BOOL isSuccess = NO;
+    
+    CGDataProviderRef fontDataProvider = CGDataProviderCreateWithURL((__bridge CFURLRef)url);
+    CGFontRef newFont = CGFontCreateWithDataProvider(fontDataProvider);
+    CGDataProviderRelease(fontDataProvider);
+    isSuccess = CTFontManagerRegisterGraphicsFont(newFont, nil);
+    CGFontRelease(newFont);
+    return isSuccess;
+}
 
 /**
  解析映射文件
 
  @param path 映射文件路径
  */
-- (void)parsePlistWithPath:(NSString *)path {
+- (NSDictionary *)registerPlistWithPath:(NSString *)path {
     NSMutableDictionary<NSString *, NSString *> *mapDict = [NSMutableDictionary new];
     NSDictionary<NSString *, id> *dict = [[NSDictionary alloc] initWithContentsOfFile:path];
     [self parseDictWithDict:dict mapDict:mapDict];
-    self.mapDict = [mapDict copy];
+    return [mapDict copy];
 }
 
 - (void)parseDictWithDict:(NSDictionary<NSString *, id> *)dict mapDict:(NSMutableDictionary<NSString *, NSString *> *)mapDict {
@@ -243,4 +294,14 @@ static MTIconFontManager *ME;
     }
     return _iconCache;
 }
+
+- (NSMutableArray<MTFontModel *> *)fonts {
+    if (!_fonts) {
+        _fonts = [NSMutableArray new];
+    }
+    return _fonts;
+}
 @end
+
+#undef UIColorFromRGBA
+#undef UIColorFromRGB
