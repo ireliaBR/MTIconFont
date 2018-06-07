@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>icon_one</key>
-	<string>\ue601</string>
-	<key>icon_two</key>
-	<string>\ue602</string>
 	<key>homepage</key>
 	<dict>
 		<key>icon_aaa</key>
@@ -24,10 +20,14 @@
 		<key>icon_ccc</key>
 		<string>\ue604</string>
 	</dict>
-	<key>icon_four</key>
-	<string>\ue604</string>
+	<key>icon_one</key>
+	<string>\ue601</string>
+	<key>icon_two</key>
+	<string>\ue602</string>
 	<key>icon_three</key>
 	<string>\ue603</string>
+	<key>icon_four</key>
+	<string>\ue604</string>
 	<key>icon_five</key>
 	<string>\ue605</string>
 	<key>icon_six</key>

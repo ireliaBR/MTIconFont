@@ -141,9 +141,9 @@ static MTIconFontManager *ME;
     CGFloat scale = [UIScreen mainScreen].scale;
     CGFloat realSize = size * scale;
     UIFont *font = [self fontWithName:fontModel.fontName size:realSize];
-    UIGraphicsBeginImageContext(CGSizeMake(realSize, realSize));
     NSString *code = [self codeWithMapDict:fontModel.mapDict IconName:iconName];
-    
+    CGRect rect = [code boundingRectWithSize:CGSizeMake(MAXFLOAT, size) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: font} context:nil];
+    UIGraphicsBeginImageContext(rect.size);
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetAlpha(context, alpha);
     if ([code respondsToSelector:@selector(drawAtPoint:withAttributes:)]) {
@@ -212,7 +212,9 @@ static MTIconFontManager *ME;
  */
 - (NSString *)replaceUnicode:(NSString *)unicodeStr
 {
-    
+    if (unicodeStr == nil) {
+        return nil;
+    }
     NSString *tempStr1 = [unicodeStr stringByReplacingOccurrencesOfString:@"\\u"withString:@"\\U"];
     NSString *tempStr2 = [tempStr1 stringByReplacingOccurrencesOfString:@"\""withString:@"\\\""];
     NSString *tempStr3 = [[@"\""stringByAppendingString:tempStr2] stringByAppendingString:@"\""];
