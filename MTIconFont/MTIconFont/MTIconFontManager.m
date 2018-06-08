@@ -307,3 +307,4 @@ static MTIconFontManager *ME;
 
 #undef UIColorFromRGBA
 #undef UIColorFromRGB
+#undef MTLog

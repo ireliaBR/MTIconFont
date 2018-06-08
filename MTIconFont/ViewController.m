@@ -41,7 +41,7 @@
 //    self.iconImageView.image = [UIImage imageNormalIconName:@"icon_two/80/0x4a4a4a"];
     self.iconImageView.image = [UIImage imageWithFontName:@"icomoon" iconName:@"12 34 56" size:50 colorRGB:0x4a4a4a alpha:1];
 //    self.iconImageView.image = [UIImage imageWithFontName:@"icomoon" iconName:@"\ue620" size:40 colorRGB:0x4a4a4a alpha:1];
-    [self.btn setImage:[UIImage imageNormalIconName:@"icon_four/50/0x7bc610"] forState:UIControlStateNormal];
+    [self.btn setImage:[UIImage imageNormalIconName:@"icon_aaa/50/0x7bc610"] forState:UIControlStateNormal];
     [self.btn setImage:[UIImage imageHighlightedIconName:@"icon_four/50/0x7bc610"] forState:UIControlStateHighlighted];
 }
 
