@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -27,23 +27,30 @@
                                     <color key="titleColor" red="1" green="0.2527923882" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FgO-Yu-p8G">
+                                <rect key="frame" x="136" y="255" width="102" height="68"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="MBH-4b-c1r" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="80" id="2qu-gp-vDU"/>
+                            <constraint firstItem="FgO-Yu-p8G" firstAttribute="top" secondItem="MBH-4b-c1r" secondAttribute="bottom" constant="104" id="3YW-Nx-7iL"/>
                             <constraint firstItem="0wJ-Ex-kPX" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="9SW-Kq-zb9"/>
                             <constraint firstItem="MBH-4b-c1r" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ByM-zd-gAm"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="0wJ-Ex-kPX" secondAttribute="bottom" constant="180" id="WyW-iG-f4c"/>
+                            <constraint firstItem="FgO-Yu-p8G" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="mJN-N2-cJo"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="btn" destination="0wJ-Ex-kPX" id="Fyx-Tw-e5q"/>
                         <outlet property="iconImageView" destination="MBH-4b-c1r" id="kur-XK-Df7"/>
+                        <outlet property="imageView" destination="FgO-Yu-p8G" id="aSm-YA-ryl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="116" y="118.29085457271366"/>
         </scene>
     </scenes>
 </document>

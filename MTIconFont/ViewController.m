@@ -19,6 +19,7 @@
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *iconImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIButton *btn;
 
 @end
@@ -27,6 +28,32 @@
 #pragma mark - 📓Lifecycle
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self register];
+    [self addImage];
+
+}
+
+#pragma mark - 📔IBActions
+
+#pragma mark - 📕Public
+
+#pragma mark - 📗Private
+- (void)addImage {
+    
+    // 1. 使用指定字体生成图片
+    self.iconImageView.image = [UIImage imageWithFontName:@"icomoon" iconName:@"12 34 56" size:50 colorRGB:0x4a4a4a alpha:1];
+    
+    // 2. 使用默认字体iconfont，或者初始化的字体。PS：如果未初始化，则会自动初始化iconfont字体
+    self.imageView.image = [UIImage imageWithIconName:@"icon_one" size:50 colorRGB:0x4a4a4a alpha:1];
+    
+    // 3. 使用/的表达式生成图片
+    [self.btn setImage:[UIImage imageNormalIconName:@"icon_aaa/50/0x7bc610"] forState:UIControlStateNormal];
+    [self.btn setImage:[UIImage imageHighlightedIconName:@"icon_four/50/0x7bc610"] forState:UIControlStateHighlighted];
+}
+
+- (void)register {
+    
     /// 初始化
     NSString *iconFontUrlStr = [[NSBundle mainBundle].bundlePath stringByAppendingPathComponent:@"iconfont.ttf"];
     NSString *iconFontMapFileUrlStr = [[NSBundle mainBundle].bundlePath stringByAppendingPathComponent:@"iconfont.plist"];
@@ -34,24 +61,8 @@
     
     // 注册水印
     NSString *waterMarkUrlStr = [[NSBundle mainBundle].bundlePath stringByAppendingPathComponent:@"icomoon.ttf"];
-    NSString *waterMarkMapFileUrlStr = [[NSBundle mainBundle].bundlePath stringByAppendingPathComponent:@"icomoon.plist"];
-    [MTIconFontManager.manager registerWithFontPath:waterMarkUrlStr plistPath:waterMarkMapFileUrlStr];
-
-    /// 获取图片
-//    self.iconImageView.image = [UIImage imageNormalIconName:@"icon_two/80/0x4a4a4a"];
-    self.iconImageView.image = [UIImage imageWithFontName:@"icomoon" iconName:@"12 34 56" size:50 colorRGB:0x4a4a4a alpha:1];
-//    self.iconImageView.image = [UIImage imageWithFontName:@"icomoon" iconName:@"\ue620" size:40 colorRGB:0x4a4a4a alpha:1];
-    [self.btn setImage:[UIImage imageNormalIconName:@"icon_aaa/50/0x7bc610"] forState:UIControlStateNormal];
-    [self.btn setImage:[UIImage imageHighlightedIconName:@"icon_four/50/0x7bc610"] forState:UIControlStateHighlighted];
+    [MTIconFontManager.manager registerWithFontPath:waterMarkUrlStr plistPath:@""];
 }
-
-#pragma mark - 📔IBActions
-
-#pragma mark - 📕Public
-
-
-#pragma mark - 📗Private
-
 
 #pragma mark - 📘Protocol conformance
 

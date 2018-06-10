@@ -1,27 +1,36 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import xml.dom.minidom as xmldom
+from biplist import readPlist
 import sys
 
+
+def dictToHtml(map):
+    strs = ''
+    for key in map:
+        value = map[key]
+        if isinstance(value, str):
+            strs += '<div class="col-md-2 box"><i class="iconfont">&#x' \
+                   + map[key][2:] \
+                   + '</i><div class="name">' \
+                   + key \
+                   + '</div><div class="code">' \
+                   + map[key] \
+                   + '</div></div>'
+
+    for key in map:
+        value = map[key]
+        if isinstance(value, dict):
+            strs += '<div class="col-md-12 group-title h3">' + key + '</div>'
+            strs += dictToHtml(value)
+            continue
+
+
+    return strs
+
+
 plistfilepath = sys.argv[1]
+map = readPlist(plistfilepath)
 
-def parsePlistToDict(plistPath):
-    dict = {}
-    domobj = xmldom.parse(plistPath)
-    elementobj = domobj.documentElement
-    keys = elementobj.getElementsByTagName("key")
-    strings = elementobj.getElementsByTagName("string")
-
-    for i in range(len(keys)):
-        key = keys[i].childNodes[0].data
-        string = strings[i].childNodes[0].data
-        dict[key] = string
-
-    return dict
-
-
-
-dict = parsePlistToDict(plistfilepath)
 
 file = open("iconfont.html", "w+")
 file.write('''
@@ -63,6 +72,15 @@ file.write('''
       .code {
         color: #17bbb0;
       }
+
+      .group-title {
+        margin-left: 3%;
+        padding-top: 3%;
+        color: red;
+        border-top-width: 1px;
+        border-top-color: black;
+        border-top-style: solid;
+      }
     </style>
   </head>
   <body>
@@ -70,12 +88,11 @@ file.write('''
       <div class="row">
 ''')
 
-for i in dict:
-    str = '<div class="col-md-2 box"><i class="iconfont">&#x' + dict[i][2:] + '</i><div class="name">' + i + '</div><div class="code">' + dict[i] + '</div></div>'
-    file.write(str)
+htmlStr = dictToHtml(map)
+file.write(htmlStr)
 
 file.write('''
-</div>
+      </div>
     </div>
   </body>
 </html>
