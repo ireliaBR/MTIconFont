@@ -70,6 +70,8 @@ IconFont是一种通过字体文件来构建纯色图的方案。更详细的介
     [MTIconFontManager.manager registerWithFontPath:waterMarkUrlStr plistPath:@""];
 ```
 
+> 使用
+
 ```objc
 	#import <MTIconFont/MTIconFont.h>
 
